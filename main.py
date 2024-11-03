@@ -2,6 +2,9 @@ from get_keyword import request_keyword
 from get_engagement_rate import request_engagement_rate
 from get_top_post_made import request_top_post_made
 
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
 # Define the URL, payload, and headers for the POST request
 timestamp_start = "2024-10-01 00:00:00"
 timestamp_end = "2024-10-30 23:59:00"
@@ -76,6 +79,7 @@ for data in engagementrate_data_list:
 
 if highest_engagement_rate_data:
     print("Account with the highest engagement rate: ")
+    print(f"  ID: {highest_engagement_rate_data['id']}")
     print(f"  Social Media: {highest_engagement_rate_data['socialMedia']}")
     print(f"  Display Name: {highest_engagement_rate_data['displayName']}")
     print(f"  Stream Type: {highest_engagement_rate_data['streamType']}")
@@ -98,11 +102,7 @@ for item in id_list:
                 timestamp_end=timestamp_end,
                 object_id=id_value
             )
-            
-            # Check if 'result' is a list and handle accordingly
-            # if top_post_made_data is not None:
-            #     if isinstance(top_post_made_data['result'], list):
-                    # If result is a list, loop through each item in the list
+
             for result_item in top_post_made_data['result']:
                 formatted_data = {
                     'id': id_value,
@@ -118,31 +118,9 @@ for item in id_list:
                     'reach': result_item.get('reach'),
                     'impression': result_item.get('impression'),
                     'timestamp': result_item.get('timestamp'),
-                    'link': result_item.get('link') # Adjust this based on actual key for the post URL
+                    'link': result_item.get('link')
                 }
-                # print(formatted_data)
                 top_post_made_data_list.append(formatted_data)
-                # else:
-                #     # If result is a dictionary, process as before
-                #     formatted_data = {
-                #         'id': id_value,
-                #         'socialMedia': top_post_made_data['result'].get('socialMedia'),
-                #         'displayName': top_post_made_data['result'].get('fromName'),
-                #         'streamType': item['streamType'],
-                #         'contentType': top_post_made_data['result'].get('contentType'),
-                #         'title': top_post_made_data['result'].get('title'),
-                #         'engagementRate': top_post_made_data.get('engagementRate'),
-                #         'shareCount': top_post_made_data.get('shareCount'),
-                #         'likeCount': top_post_made_data.get('likeCount'),
-                #         'commentCount': top_post_made_data.get('commentCount'),
-                #         'reach': top_post_made_data.get('reach'),
-                #         'impression': top_post_made_data.get('impression'),
-                #         'timestamp': top_post_made_data.get('timestamp'),
-                #         'link': top_post_made_data['result'].get('link'),  # Adjust this based on actual key for the post URL
-                #     }
-                #     print('DICTIONARYYYYYYYY')
-                #     print(formatted_data)
-                #     top_post_made_data_list.append(formatted_data)
                     
         except Exception as e:
             print(f"Error occurred while fetching top post data for ID {id_value}: {e}")
@@ -155,25 +133,29 @@ if top_post_made_data_list:
 
         # Start from the second item and compare each item's engagement rate
         for data in top_post_made_data_list[1:]:
-            if data['engagementRate'] > post_highest_engagement_rate_data['engagementRate']:
+            if data.get('engagementRate') > post_highest_engagement_rate_data.get('engagementRate'):
                 post_highest_engagement_rate_data = data
 
+    if highest_engagement_rate_data:
+        platform_post_highest_engagement_rate_list = request_top_post_made(timestamp_start=timestamp_start,
+                                                                        timestamp_end=timestamp_end,
+                                                                        object_id=highest_engagement_rate_data['id'])
+        
+        for data in platform_post_highest_engagement_rate_list['result']:
+            platform_post_highest_engagement_rate_data = platform_post_highest_engagement_rate_list['result'][0]
+            # Start from the second item and compare each item's engagement rate
+            for data in platform_post_highest_engagement_rate_list['result'][1:]:
+                if data['engagementRate'] > platform_post_highest_engagement_rate_data['engagementRate']:
+                    platform_post_highest_engagement_rate_data = data
 
-# For anisa please fix this, this is for getting the highest post engagement rate within the platform with the highest engagement rate on average
-    # for data in top_post_made_data_list:
-    #     if data['id'] == highest_engagement_rate_data['id']:
-    #         platform_post_highest_engagement_rate_data = top_post_made_data_list[0]
-    #         for data in top_post_made_data_list[1:]:
-    #             if data['engagementRate'] > platform_post_highest_engagement_rate_data['engagementRate']:
-    #                 platform_post_highest_engagement_rate_data = data
-
-# if platform_post_highest_engagement_rate_data:
-#     print("Highest post engagement rate in the account with the highest engagement rate: ")
-#     print(f"  Social Media: {platform_post_highest_engagement_rate_data['socialMedia']}")
-#     print(f"  Display Name: {platform_post_highest_engagement_rate_data['displayName']}")
-#     print(f"  Stream Type: {platform_post_highest_engagement_rate_data['streamType']}")
-#     print(f"  Engagement Rate: {platform_post_highest_engagement_rate_data['engagementRate']}")
-#     print()
+if platform_post_highest_engagement_rate_list:
+    print("Highest post engagement rate in the account with the highest engagement rate: ")
+    print(f"  Social Media: {platform_post_highest_engagement_rate_data.get('socialMedia')}")
+    print(f"  Display Name: {platform_post_highest_engagement_rate_data.get('fromName')}")
+    print(f"  Stream Type: {platform_post_highest_engagement_rate_data.get('streamType')}")
+    print(f"  Caption: {platform_post_highest_engagement_rate_data.get('content')}")
+    print(f"  Engagement Rate: {platform_post_highest_engagement_rate_data.get('engagementRate')}")
+    print()
 
 
 
@@ -211,6 +193,8 @@ for data in top_post_made_data_list:
 for platform, count in post_counts.items():
     print(f"Social Media: {platform}, Post Count: {count}")
 
+print()
+
 if post_highest_engagement_rate_data:
     print("Post with the highest engagement rate: ")
     print(f"  Social Media: {post_highest_engagement_rate_data['socialMedia']}")
@@ -226,5 +210,4 @@ if post_highest_engagement_rate_data:
     print(f"  Reach: {post_highest_engagement_rate_data['reach']}")
     print(f"  Impression: {post_highest_engagement_rate_data['impression']}")
     print(f"  Link: {post_highest_engagement_rate_data['link']}")
-    print()
     print()
