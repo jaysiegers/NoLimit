@@ -1,6 +1,7 @@
 from get_keyword import request_keyword
 from get_engagement_rate import request_engagement_rate
 from get_top_post_made import request_top_post_made
+from get_stream import request_stream
 
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
@@ -148,6 +149,57 @@ if top_post_made_data_list:
                 if data['engagementRate'] > platform_post_highest_engagement_rate_data['engagementRate']:
                     platform_post_highest_engagement_rate_data = data
 
+# most_comment_platform_data = request_stream(
+#             timestamp_start=timestamp_start,
+#             timestamp_end=timestamp_end,
+#             object_id='21c2246f-333f-445b-920f-eda7433fa602'
+#         )
+
+most_comment_platform_data_list = []
+
+for item in id_list:
+    if item['streamType'] == 'account':
+        id_value = item['id']
+        try:
+            most_comment_platform_data = request_stream(
+                timestamp_start=timestamp_start,
+                timestamp_end=timestamp_end,
+                object_id=id_value
+            )
+            if most_comment_platform_data:
+                formatted_data = {
+                    'timestamp': most_comment_platform_data['result']['list'][0]['timestamp'],
+                    'socialMedia': most_comment_platform_data['result']['list'][0]['socialMedia'],
+                    'fromName': most_comment_platform_data['result']['list'][0]['fromName'],
+                    'keywordStreamType': most_comment_platform_data['result']['list'][0]['keyword']['streamType'],
+                    'link': most_comment_platform_data['result']['list'][0]['link'],
+                    'engagementRate': most_comment_platform_data['result']['list'][0]['engagementRate'],
+                    'content': most_comment_platform_data['result']['list'][0]['content'],
+                    'contentType': most_comment_platform_data['result']['list'][0]['contentType'],
+                    'id': most_comment_platform_data['result']['list'][0]['id']
+                }
+                most_comment_platform_data_list.append(formatted_data)
+
+        except Exception as e:
+            print(f"Error occurred while fetching top post data for ID {id_value}: {e}")
+
+
+
+        # if most_comment_platform_data is not None:
+        #     # Structure the data neatly, including social media and stream type
+        #     formatted_data = {
+        #         'id': id_value,
+        #         'socialMedia': item['socialMedia'],
+        #         'displayName': item['displayName'],
+        #         'streamType': item['streamType'],
+        #         'value': engagementrate_data['result']['value'],
+        #         'growth': engagementrate_data['result']['growth'],
+        #         'past': engagementrate_data['result']['past'],
+        #         'contentType': engagementrate_data['result']['contentType'],
+        #         'title': engagementrate_data['result']['title']
+        #     }
+            # engagementrate_data_list.append(formatted_data)
+
 if platform_post_highest_engagement_rate_list:
     print("Highest post engagement rate in the account with the highest engagement rate: ")
     print(f"  Social Media: {platform_post_highest_engagement_rate_data.get('socialMedia')}")
@@ -202,7 +254,6 @@ if post_highest_engagement_rate_data:
     print(f"  Stream Type: {post_highest_engagement_rate_data['streamType']}")
     print(f"  Content Type: {post_highest_engagement_rate_data['contentType']}")
     print(f"  Title: {post_highest_engagement_rate_data['title']}")
-    print(f"  Link: {post_highest_engagement_rate_data['link']}")
     print(f"  Engagement Rate: {post_highest_engagement_rate_data['engagementRate']}")
     print(f"  Share Count: {post_highest_engagement_rate_data['shareCount']}")
     print(f"  Like Count: {post_highest_engagement_rate_data['likeCount']}")
@@ -211,3 +262,6 @@ if post_highest_engagement_rate_data:
     print(f"  Impression: {post_highest_engagement_rate_data['impression']}")
     print(f"  Link: {post_highest_engagement_rate_data['link']}")
     print()
+
+if(most_comment_platform_data_list):
+    print(most_comment_platform_data_list)
