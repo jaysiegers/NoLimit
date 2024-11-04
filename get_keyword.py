@@ -16,7 +16,6 @@ def request_keyword():
         
         if response.status_code == 200:
             data = response.json()
-            #print("Data from NoLimit API:", data)
             return data
         else:
             print(f"Error: {response.status_code}, {response.text}")

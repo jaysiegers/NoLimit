@@ -6,21 +6,19 @@ from get_stream import request_stream
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
-# Define the URL, payload, and headers for the POST request
 timestamp_start = "2024-10-01 00:00:00"
 timestamp_end = "2024-10-30 23:59:00"
 
-# Call the function to get keyword data with error handling
 try:
     keyword_data = request_keyword()
     if keyword_data is None or 'result' not in keyword_data:
         print("No data received from request_keyword(). Please check the API connection.")
-        keyword_data = {'result': []}  # Use an empty list as fallback to avoid further errors.
+        keyword_data = {'result': []}
 except Exception as e:
     print(f"Network error occurred while fetching keyword data: {e}")
-    keyword_data = {'result': []}  # Fallback to empty data to prevent further errors.
+    keyword_data = {'result': []} 
 
-# Extract IDs along with social media and stream type information
+
 id_list = [
     {
         'id': item['id'],
@@ -42,7 +40,6 @@ for item in id_list:
             object_id=id_value
         )
         if engagementrate_data is not None:
-            # Structure the data neatly, including social media and stream type
             formatted_data = {
                 'id': id_value,
                 'socialMedia': item['socialMedia'],
@@ -57,15 +54,11 @@ for item in id_list:
             engagementrate_data_list.append(formatted_data)
 
 if engagementrate_data_list:
-    # Initialize with the first item in the list
     highest_engagement_rate_data = engagementrate_data_list[0]
-
-    # Start from the second item and compare each item's engagement rate
     for data in engagementrate_data_list[1:]:
         if data['value'] > highest_engagement_rate_data['value']:
             highest_engagement_rate_data = data
 
-# Print the tidied-up list with social media and stream type included
 print(" ")
 print("Engagement Rate Data List:")
 for data in engagementrate_data_list:
@@ -97,7 +90,6 @@ if highest_engagement_rate_data:
 
 top_post_made_data_list = []
 
-# Fetch top posts made for each item in id_list
 for item in id_list:
     if item['streamType'] == 'account':
         id_value = item['id']
@@ -133,10 +125,7 @@ for item in id_list:
 
 if top_post_made_data_list:
     for data in top_post_made_data_list:
-        # Initialize with the first item in the list
         post_highest_engagement_rate_data = top_post_made_data_list[0]
-
-        # Start from the second item and compare each item's engagement rate
         for data in top_post_made_data_list[1:]:
             if data.get('engagementRate') > post_highest_engagement_rate_data.get('engagementRate'):
                 post_highest_engagement_rate_data = data
@@ -148,16 +137,9 @@ if top_post_made_data_list:
         
         for data in platform_post_highest_engagement_rate_list['result']:
             platform_post_highest_engagement_rate_data = platform_post_highest_engagement_rate_list['result'][0]
-            # Start from the second item and compare each item's engagement rate
             for data in platform_post_highest_engagement_rate_list['result'][1:]:
                 if data['engagementRate'] > platform_post_highest_engagement_rate_data['engagementRate']:
                     platform_post_highest_engagement_rate_data = data
-
-# most_comment_platform_data = request_stream(
-#             timestamp_start=timestamp_start,
-#             timestamp_end=timestamp_end,
-#             object_id='21c2246f-333f-445b-920f-eda7433fa602'
-#         )
 
 most_comment_platform_data_list = []
 
@@ -189,22 +171,16 @@ for item in id_list:
         except Exception as e:
             print(f"Error occurred while fetching top post data for ID {id_value}: {e}")
 
+if len(most_comment_platform_data_list) > 1:
+    most_comment_data = most_comment_platform_data_list[0]
+    for data in most_comment_platform_data_list[1:]:
+        if data['commentCount'] > most_comment_data['commentCount']:
+            most_comment_data = data
+            print(most_comment_data)
+    else:
+        most_comment_data = most_comment_platform_data_list[0] 
+        print(most_comment_data)
 
-
-        # if most_comment_platform_data is not None:
-        #     # Structure the data neatly, including social media and stream type
-        #     formatted_data = {
-        #         'id': id_value,
-        #         'socialMedia': item['socialMedia'],
-        #         'displayName': item['displayName'],
-        #         'streamType': item['streamType'],
-        #         'value': engagementrate_data['result']['value'],
-        #         'growth': engagementrate_data['result']['growth'],
-        #         'past': engagementrate_data['result']['past'],
-        #         'contentType': engagementrate_data['result']['contentType'],
-        #         'title': engagementrate_data['result']['title']
-        #     }
-            # engagementrate_data_list.append(formatted_data)
 
 if platform_post_highest_engagement_rate_list:
     print("--------------------------------------------------------------------------------------------------------------------------------")
@@ -243,7 +219,6 @@ else:
 print("--------------------------------------------------------------------------------------------------------------------------------")
 print(" ")
 
-# Count posts per social media platform
 post_counts = {}
 
 for data in top_post_made_data_list:
@@ -253,12 +228,10 @@ for data in top_post_made_data_list:
     else:
         post_counts[platform] = 1
 
-# Print post count per social media platform
 for platform, count in post_counts.items():
     print(f"Social Media: {platform}, Post Count: {count}")
     
 print()
-
 
 if post_highest_engagement_rate_data:
     print("--------------------------------------------------------------------------------------------------------------------------------")
@@ -281,7 +254,7 @@ if post_highest_engagement_rate_data:
 if(most_comment_platform_data_list):
     print("--------------------------------------------------------------------------------------------------------------------------------")
     print(" ")
-    print("Post with the highest comment: ")
+    print("Post with the highest comment on each platform: ")
     for data in most_comment_platform_data_list:
         print(f"  Time Stamp: {data['timestamp']}")
         print(f"  Social Media: {data['socialMedia']}")
@@ -295,3 +268,20 @@ if(most_comment_platform_data_list):
         print(f"  Content Type: {data['contentType']}")
         print(f"  ID: {data['id']}")
         print()
+
+if(most_comment_data):
+    print("--------------------------------------------------------------------------------------------------------------------------------")
+    print(" ")
+    print("Post with the highest comment: ")
+    print(f"  Time Stamp: {most_comment_data['timestamp']}")
+    print(f"  Social Media: {most_comment_data['socialMedia']}")
+    print(f"  From Name: {most_comment_data['fromName']}")
+    print(f"  Keyword Stream Type: {most_comment_data['keywordStreamType']}")
+    print(f"  Link: {most_comment_data['link']}")
+    print(f"  Engagement Rate: {most_comment_data['engagementRate']}")
+    print(f"  Engagement: {most_comment_data['engagement']}")
+    print(f"  Comment Count: {most_comment_data['commentCount']}")
+    print(f"  Content: {most_comment_data['content']}")
+    print(f"  Content Type: {most_comment_data['contentType']}")
+    print(f"  ID: {most_comment_data['id']}")
+    print()
