@@ -1,22 +1,3 @@
-"""
-Social Media Evaluation:
-- Best performing engagement rate per post in which platform
-- Which content it was
-- Best performing engagement rate in which platform and why
-
-
-Online Media Evaluation:
--Sentiments percentage
--What date is the highest for positive/neutral/negative and why
--Which media covers the most about
-
-Reputation Analysis Evaluation:
--How many talks regarding ASDP and what sentiment
--What date is the highest for positive/neutral/negative and why
--Highest issue and regarding of what
--What kategori with the most talk and what sentiment
--Perceptions regarding
-"""
 import requests
 
 def request_keyword():

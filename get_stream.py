@@ -1,9 +1,9 @@
 import requests
 import json
 
-def request_engagement_rate(timestamp_start, timestamp_end, object_id):
+def request_stream(timestamp_start, timestamp_end, object_id):
 
-    url = "https://external.backend.dashboard.nolimit.id/v1.0/social-media/engagement-rate"
+    url = "https://external.backend.dashboard.nolimit.id/v1.0/social-media/stream"
     api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
 
 
@@ -14,17 +14,21 @@ def request_engagement_rate(timestamp_start, timestamp_end, object_id):
     }
 
     payload = {
-      "timestamp_start": timestamp_start,
-      "timestamp_end": timestamp_end,
-      "object_ids": [object_id],
-      "label_ids": [],
-      "include_keywords": [],
-      "exclude_keywords": [],
-      "sentiment": [],
-      "content_type_list": [],
-      "post_ownership": [],
-      "validation_list": []
-    }
+        "timestamp_start": timestamp_start,
+        "timestamp_end": timestamp_end,
+        "object_ids": [object_id],
+        "label_ids": [],
+        "include_keywords": [],
+        "exclude_keywords": [],
+        "sentiment": [],
+        "content_type_list": [],
+        "post_ownership": ["postmade"],
+        "validation_list": [],
+        "page": 1,
+        "size": 1,
+        "column_to_sort": "comment",
+        "sort_by": "desc"
+        }
 
     try:
         response = requests.post(url, json=payload, headers=headers)
