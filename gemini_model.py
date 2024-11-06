@@ -1,6 +1,5 @@
 import google.generativeai as genai
 
-
 from social_media_analysis import (
     platform_post_highest_engagement_rate_data,
     post_highest_engagement_rate_data,

@@ -1,7 +1,7 @@
-from get_keyword import request_keyword
-from get_engagement_rate import request_engagement_rate
-from get_top_post_made import request_top_post_made
-from get_stream import request_stream
+from NoLimit_API_Endpoint.get_keyword import request_keyword
+from NoLimit_API_Endpoint.get_engagement_rate import request_engagement_rate
+from NoLimit_API_Endpoint.get_top_post_made import request_top_post_made
+from NoLimit_API_Endpoint.get_stream import request_stream
 
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
