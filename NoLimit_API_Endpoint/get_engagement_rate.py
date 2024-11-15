@@ -1,10 +1,10 @@
 import requests
 import json
 
-def request_engagement_rate(timestamp_start, timestamp_end, object_id):
+def request_engagement_rate(api_key, timestamp_start, timestamp_end, object_id):
 
     url = "https://external.backend.dashboard.nolimit.id/v1.0/social-media/engagement-rate"
-    api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
+    # api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
 
 
     headers = {

@@ -1,10 +1,10 @@
 import requests
 import json
 
-def request_top_post_made(timestamp_start, timestamp_end, object_id):
+def request_top_post_made(api_key, timestamp_start, timestamp_end, object_id):
 
     url = "https://external.backend.dashboard.nolimit.id/v1.0/social-media/top-post-made"
-    api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
+    # api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
 
 
     headers = {

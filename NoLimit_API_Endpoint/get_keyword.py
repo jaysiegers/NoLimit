@@ -1,9 +1,9 @@
 import requests
 
-def request_keyword():
+def request_keyword(api_key):
     
     url = "https://external.backend.dashboard.nolimit.id/v1.0/social-media/keyword-list"
-    api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
+    # api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
 
     headers = {
       "Content-Type": "application/json",

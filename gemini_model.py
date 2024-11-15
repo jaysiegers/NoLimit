@@ -1,15 +1,18 @@
 import google.generativeai as genai
+from social_media_analysis import social_media_analysis
 
-from social_media_analysis import (
-    platform_post_highest_engagement_rate_data,
-    post_highest_engagement_rate_data,
-    highest_engagement_rate_data,
-    most_comment_data,
-    timestamp_start,
-    timestamp_end
-)
+# from social_media_analysis import (
+#     platform_post_highest_engagement_rate_data,
+#     post_highest_engagement_rate_data,
+#     highest_engagement_rate_data,
+#     most_comment_data,
+#     timestamp_start,
+#     timestamp_end
+# )
 
-def social_media_analysis(): 
+def process_social_media_analysis_response(api_key, object_ids, timestamp_start, timestamp_end): 
+
+    platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, most_comment_data = social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end)
     genai.configure(api_key="AIzaSyByIpsd3zkJldFuApQA3mTmA_ziTXpOJyY")
     model = genai.GenerativeModel("gemini-1.5-flash")
 
@@ -20,7 +23,7 @@ def social_media_analysis():
         "Don't use/include bold (** **), escape quotes (\" \"), emojis, hashtags within the caption"
         "Use the following structure:\n\n"
         "Pada bulan [Timestamp start, Timestamp end], PT. ASDP mencatatkan performa terbaik di platform [platform] dengan engagement rate sebesar [Engagement rate value of platform with the highest ER] terutama pada konten mengenai [Caption of platform with the highest ER (max 1 sentence)]. "
-        #f"Selain itu, platform {post_highest_engagement_rate_data} mendapatkan total engagement rate tertinggi sebesar [total number] karena [reasons].\n\n"
+        #f"Selain itu, platform {post_highest_engagement_rate_data} mendapatkan total engagement tertinggi sebesar [total number] karena [reasons].\n\n"
         #"PT. ASDP mendapatkan engagement tertinggi pada hari [Day] pada pukul [Time].\n\n"
         "Konten yang paling banyak dikomentari di [Platform with most commented post] adalah [Content type of most commented post] terutama terkait [Caption of most commented post (max 1 sentence)].\n\n"
         "Here is the data to be summarized:\n"
