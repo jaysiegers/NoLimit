@@ -3,11 +3,7 @@ from NoLimit_API_Endpoint.get_engagement_rate import request_engagement_rate
 from NoLimit_API_Endpoint.get_top_post_made import request_top_post_made
 from NoLimit_API_Endpoint.get_stream import request_stream
 
-import sys
-sys.stdout.reconfigure(encoding='utf-8')
 
-# timestamp_start = "2024-10-01 00:00:00"
-# timestamp_end = "2024-10-30 23:59:00"
 def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
     try:
         keyword_data = request_keyword(api_key)
@@ -15,7 +11,7 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
             print("No data received from request_keyword(). Please check the API connection.")
             keyword_data = {'result': []}
     except Exception as e:
-        print(f"Network error occurred while fetching keyword data: {e}")
+        #print(f"Network error occurred while fetching keyword data: {e}")
         keyword_data = {'result': []} 
 
     object_id_list = [{'id': item} for item in object_ids]
@@ -74,34 +70,34 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
             if data['value'] > highest_engagement_rate_data['value']:
                 highest_engagement_rate_data = data
 
-    print(" ")
-    print("Engagement Rate Data List:")
-    for data in engagementrate_data_list:
-        print(f"ID: {data['id']}")
-        print(f"  Social Media: {data['socialMedia']}")
-        print(f"  Display Name: {data['displayName']}")
-        print(f"  Stream Type: {data['streamType']}")
-        print(f"  Value: {data['value']}")
-        print(f"  Growth: {data['growth']}%")
-        print(f"  Past: {data['past']}")
-        print(f"  Content Type: {data['contentType']}")
-        print(f"  Title: {data['title']}")
-        print()
+    # print(" ")
+    # print("Engagement Rate Data List:")
+    # for data in engagementrate_data_list:
+    #     print(f"ID: {data['id']}")
+    #     print(f"  Social Media: {data['socialMedia']}")
+    #     print(f"  Display Name: {data['displayName']}")
+    #     print(f"  Stream Type: {data['streamType']}")
+    #     print(f"  Value: {data['value']}")
+    #     print(f"  Growth: {data['growth']}%")
+    #     print(f"  Past: {data['past']}")
+    #     print(f"  Content Type: {data['contentType']}")
+    #     print(f"  Title: {data['title']}")
+    #     print()
 
-    if highest_engagement_rate_data:
-        print("--------------------------------------------------------------------------------------------------------------------------------")
-        print(" ")
-        print("Account with the highest engagement rate: ")
-        print(f"  ID: {highest_engagement_rate_data['id']}")
-        print(f"  Social Media: {highest_engagement_rate_data['socialMedia']}")
-        print(f"  Display Name: {highest_engagement_rate_data['displayName']}")
-        print(f"  Stream Type: {highest_engagement_rate_data['streamType']}")
-        print(f"  Value: {highest_engagement_rate_data['value']}")
-        print(f"  Growth: {highest_engagement_rate_data['growth']}%")
-        print(f"  Past: {highest_engagement_rate_data['past']}")
-        print(f"  Content Type: {highest_engagement_rate_data['contentType']}")
-        print(f"  Title: {highest_engagement_rate_data['title']}")
-        print()
+    # if highest_engagement_rate_data:
+    #     print("--------------------------------------------------------------------------------------------------------------------------------")
+    #     print(" ")
+    #     print("Account with the highest engagement rate: ")
+    #     print(f"  ID: {highest_engagement_rate_data['id']}")
+    #     print(f"  Social Media: {highest_engagement_rate_data['socialMedia']}")
+    #     print(f"  Display Name: {highest_engagement_rate_data['displayName']}")
+    #     print(f"  Stream Type: {highest_engagement_rate_data['streamType']}")
+    #     print(f"  Value: {highest_engagement_rate_data['value']}")
+    #     print(f"  Growth: {highest_engagement_rate_data['growth']}%")
+    #     print(f"  Past: {highest_engagement_rate_data['past']}")
+    #     print(f"  Content Type: {highest_engagement_rate_data['contentType']}")
+    #     print(f"  Title: {highest_engagement_rate_data['title']}")
+    #     print()
 
     top_post_made_data_list = []
 
@@ -194,48 +190,48 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
         for data in most_comment_platform_data_list[1:]:
             if data['commentCount'] > most_comment_data['commentCount']:
                 most_comment_data = data
-                print(most_comment_data)
+                # print(most_comment_data)
         else:
             most_comment_data = most_comment_platform_data_list[0] 
-            print(most_comment_data)
+            # print(most_comment_data)
 
 
-    if platform_post_highest_engagement_rate_list:
-        print("--------------------------------------------------------------------------------------------------------------------------------")
-        print(" ")
-        print("Highest post engagement rate in the account with the highest engagement rate: ")
-        print(f"  Social Media: {platform_post_highest_engagement_rate_data.get('socialMedia')}")
-        print(f"  Display Name: {platform_post_highest_engagement_rate_data.get('fromName')}")
-        print(f"  Stream Type: {platform_post_highest_engagement_rate_data.get('streamType')}")
-        print(f"  Caption: {platform_post_highest_engagement_rate_data.get('content')}")
-        print(f"  Engagement Rate: {platform_post_highest_engagement_rate_data.get('engagementRate')}")
-        print()
+    # if platform_post_highest_engagement_rate_list:
+    #     print("--------------------------------------------------------------------------------------------------------------------------------")
+    #     print(" ")
+    #     print("Highest post engagement rate in the account with the highest engagement rate: ")
+    #     print(f"  Social Media: {platform_post_highest_engagement_rate_data.get('socialMedia')}")
+    #     print(f"  Display Name: {platform_post_highest_engagement_rate_data.get('fromName')}")
+    #     print(f"  Stream Type: {platform_post_highest_engagement_rate_data.get('streamType')}")
+    #     print(f"  Caption: {platform_post_highest_engagement_rate_data.get('content')}")
+    #     print(f"  Engagement Rate: {platform_post_highest_engagement_rate_data.get('engagementRate')}")
+    #     print()
 
-    if top_post_made_data_list:
-        print("--------------------------------------------------------------------------------------------------------------------------------")
-        print(" ")
-        print("Top post made data list: ")
-        for data in top_post_made_data_list:
-            print(f"ID: {data['id']}")
-            print(f"  Social Media: {data['socialMedia']}")
-            print(f"  Display Name: {data['displayName']}")
-            print(f"  Stream Type: {data['streamType']}")
-            print(f"  Content Type: {data['contentType']}")
-            print(f"  Title: {data['title']}")
-            print(f"  Engagement Rate: {data['engagementRate']}")
-            print(f"  Share Count: {data['shareCount']}")
-            print(f"  Like Count: {data['likeCount']}")
-            print(f"  Comment Count: {data['commentCount']}")
-            print(f"  Reach: {data['reach']}")
-            print(f"  Impression: {data['impression']}")
-            print(f"  Link: {data['link']}")
-            print()
+    # if top_post_made_data_list:
+    #     print("--------------------------------------------------------------------------------------------------------------------------------")
+    #     print(" ")
+    #     print("Top post made data list: ")
+    #     for data in top_post_made_data_list:
+    #         print(f"ID: {data['id']}")
+    #         print(f"  Social Media: {data['socialMedia']}")
+    #         print(f"  Display Name: {data['displayName']}")
+    #         print(f"  Stream Type: {data['streamType']}")
+    #         print(f"  Content Type: {data['contentType']}")
+    #         print(f"  Title: {data['title']}")
+    #         print(f"  Engagement Rate: {data['engagementRate']}")
+    #         print(f"  Share Count: {data['shareCount']}")
+    #         print(f"  Like Count: {data['likeCount']}")
+    #         print(f"  Comment Count: {data['commentCount']}")
+    #         print(f"  Reach: {data['reach']}")
+    #         print(f"  Impression: {data['impression']}")
+    #         print(f"  Link: {data['link']}")
+    #         print()
             
-    else:
-        print("No top post data available.")
+    # else:
+    #     print("No top post data available.")
         
-    print("--------------------------------------------------------------------------------------------------------------------------------")
-    print(" ")
+    # print("--------------------------------------------------------------------------------------------------------------------------------")
+    # print(" ")
 
     post_counts = {}
 
@@ -246,62 +242,62 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
         else:
             post_counts[platform] = 1
 
-    for platform, count in post_counts.items():
-        print(f"Social Media: {platform}, Post Count: {count}")
+    # for platform, count in post_counts.items():
+    #     print(f"Social Media: {platform}, Post Count: {count}")
         
-    print()
+    # print()
 
-    if post_highest_engagement_rate_data:
-        print("--------------------------------------------------------------------------------------------------------------------------------")
-        print(" ")
-        print("Post with the highest engagement rate: ")
-        print(f"  Social Media: {post_highest_engagement_rate_data['socialMedia']}")
-        print(f"  Display Name: {post_highest_engagement_rate_data['displayName']}")
-        print(f"  Stream Type: {post_highest_engagement_rate_data['streamType']}")
-        print(f"  Content Type: {post_highest_engagement_rate_data['contentType']}")
-        print(f"  Title: {post_highest_engagement_rate_data['title']}")
-        print(f"  Engagement Rate: {post_highest_engagement_rate_data['engagementRate']}")
-        print(f"  Share Count: {post_highest_engagement_rate_data['shareCount']}")
-        print(f"  Like Count: {post_highest_engagement_rate_data['likeCount']}")
-        print(f"  Comment Count: {post_highest_engagement_rate_data['commentCount']}")
-        print(f"  Reach: {post_highest_engagement_rate_data['reach']}")
-        print(f"  Impression: {post_highest_engagement_rate_data['impression']}")
-        print(f"  Link: {post_highest_engagement_rate_data['link']}")
-        print()    
+    # if post_highest_engagement_rate_data:
+    #     print("--------------------------------------------------------------------------------------------------------------------------------")
+    #     print(" ")
+    #     print("Post with the highest engagement rate: ")
+    #     print(f"  Social Media: {post_highest_engagement_rate_data['socialMedia']}")
+    #     print(f"  Display Name: {post_highest_engagement_rate_data['displayName']}")
+    #     print(f"  Stream Type: {post_highest_engagement_rate_data['streamType']}")
+    #     print(f"  Content Type: {post_highest_engagement_rate_data['contentType']}")
+    #     print(f"  Title: {post_highest_engagement_rate_data['title']}")
+    #     print(f"  Engagement Rate: {post_highest_engagement_rate_data['engagementRate']}")
+    #     print(f"  Share Count: {post_highest_engagement_rate_data['shareCount']}")
+    #     print(f"  Like Count: {post_highest_engagement_rate_data['likeCount']}")
+    #     print(f"  Comment Count: {post_highest_engagement_rate_data['commentCount']}")
+    #     print(f"  Reach: {post_highest_engagement_rate_data['reach']}")
+    #     print(f"  Impression: {post_highest_engagement_rate_data['impression']}")
+    #     print(f"  Link: {post_highest_engagement_rate_data['link']}")
+    #     print()    
 
-    if(most_comment_platform_data_list):
-        print("--------------------------------------------------------------------------------------------------------------------------------")
-        print(" ")
-        print("Post with the highest comment on each platform: ")
-        for data in most_comment_platform_data_list:
-            print(f"  Time Stamp: {data['timestamp']}")
-            print(f"  Social Media: {data['socialMedia']}")
-            print(f"  From Name: {data['fromName']}")
-            print(f"  Keyword Stream Type: {data['keywordStreamType']}")
-            print(f"  Link: {data['link']}")
-            print(f"  Engagement Rate: {data['engagementRate']}")
-            print(f"  Engagement: {data['engagement']}")
-            print(f"  Comment Count: {data['commentCount']}")
-            print(f"  Content: {data['content']}")
-            print(f"  Content Type: {data['contentType']}")
-            print(f"  ID: {data['id']}")
-            print()
+    # if(most_comment_platform_data_list):
+    #     print("--------------------------------------------------------------------------------------------------------------------------------")
+    #     print(" ")
+    #     print("Post with the highest comment on each platform: ")
+    #     for data in most_comment_platform_data_list:
+    #         print(f"  Time Stamp: {data['timestamp']}")
+    #         print(f"  Social Media: {data['socialMedia']}")
+    #         print(f"  From Name: {data['fromName']}")
+    #         print(f"  Keyword Stream Type: {data['keywordStreamType']}")
+    #         print(f"  Link: {data['link']}")
+    #         print(f"  Engagement Rate: {data['engagementRate']}")
+    #         print(f"  Engagement: {data['engagement']}")
+    #         print(f"  Comment Count: {data['commentCount']}")
+    #         print(f"  Content: {data['content']}")
+    #         print(f"  Content Type: {data['contentType']}")
+    #         print(f"  ID: {data['id']}")
+    #         print()
 
-    if(most_comment_data):
-        print("--------------------------------------------------------------------------------------------------------------------------------")
-        print(" ")
-        print("Post with the highest comment: ")
-        print(f"  Time Stamp: {most_comment_data['timestamp']}")
-        print(f"  Social Media: {most_comment_data['socialMedia']}")
-        print(f"  From Name: {most_comment_data['fromName']}")
-        print(f"  Keyword Stream Type: {most_comment_data['keywordStreamType']}")
-        print(f"  Link: {most_comment_data['link']}")
-        print(f"  Engagement Rate: {most_comment_data['engagementRate']}")
-        print(f"  Engagement: {most_comment_data['engagement']}")
-        print(f"  Comment Count: {most_comment_data['commentCount']}")
-        print(f"  Content: {most_comment_data['content']}")
-        print(f"  Content Type: {most_comment_data['contentType']}")
-        print(f"  ID: {most_comment_data['id']}")
-        print()
+    # if(most_comment_data):
+    #     print("--------------------------------------------------------------------------------------------------------------------------------")
+    #     print(" ")
+    #     print("Post with the highest comment: ")
+    #     print(f"  Time Stamp: {most_comment_data['timestamp']}")
+    #     print(f"  Social Media: {most_comment_data['socialMedia']}")
+    #     print(f"  From Name: {most_comment_data['fromName']}")
+    #     print(f"  Keyword Stream Type: {most_comment_data['keywordStreamType']}")
+    #     print(f"  Link: {most_comment_data['link']}")
+    #     print(f"  Engagement Rate: {most_comment_data['engagementRate']}")
+    #     print(f"  Engagement: {most_comment_data['engagement']}")
+    #     print(f"  Comment Count: {most_comment_data['commentCount']}")
+    #     print(f"  Content: {most_comment_data['content']}")
+    #     print(f"  Content Type: {most_comment_data['contentType']}")
+    #     print(f"  ID: {most_comment_data['id']}")
+    #     print()
 
     return platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, most_comment_data

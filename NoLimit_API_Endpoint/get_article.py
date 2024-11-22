@@ -1,5 +1,4 @@
 import requests
-import json
 
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
@@ -17,9 +16,7 @@ headers = {
 payload = {
   "timestamp_start": "2024-10-01 00:00:00",
   "timestamp_end": "2024-10-30 23:59:00",
-  # "media_list": [
-  #   ""
-  # ],
+  "media_list": [],
   "phrase": "asdp",
   "sentiment": "positive",
   "limit": 10,

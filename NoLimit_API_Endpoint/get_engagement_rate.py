@@ -1,5 +1,4 @@
 import requests
-import json
 
 def request_engagement_rate(api_key, timestamp_start, timestamp_end, object_id):
 

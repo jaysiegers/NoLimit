@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Header, Depends
 from pydantic import BaseModel, Field
+from mangum import Mangum
 from typing import List, Dict, Any
 from gemini_model import process_social_media_analysis_response
 
@@ -7,6 +8,7 @@ from gemini_model import process_social_media_analysis_response
 # timestamp_end = "2024-10-30 23:59:00"
 
 app = FastAPI()
+handler = Mangum(app)
 
 class AnalysisRequest(BaseModel):
     object_ids: List[str] = Field(..., example=["object_id_1", "object_id_2"])
