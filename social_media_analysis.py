@@ -1,6 +1,8 @@
 from NoLimit_API_Endpoint.get_keyword import request_keyword
 from NoLimit_API_Endpoint.get_engagement_rate import request_engagement_rate
 from NoLimit_API_Endpoint.get_top_post_made import request_top_post_made
+from NoLimit_API_Endpoint.get_engagement import request_engagement
+from NoLimit_API_Endpoint.get_peaktime import request_peaktime
 from NoLimit_API_Endpoint.get_stream import request_stream
 
 
@@ -154,6 +156,57 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
                     if data['engagementRate'] > platform_post_highest_engagement_rate_data['engagementRate']:
                         platform_post_highest_engagement_rate_data = data
 
+
+
+    engagement_platform_data_list = []
+
+    for item in id_list:
+        if item['streamType'] == 'account':
+            id_value = item['id']
+            try:
+                engagement_platform_data = request_engagement(
+                    api_key=api_key,
+                    timestamp_start=timestamp_start,
+                    timestamp_end=timestamp_end,
+                    object_id=id_value
+                )
+                if engagement_platform_data:
+                    formatted_data = {
+                        'value': engagement_platform_data['result']['value'],
+                        'socialMedia': item['socialMedia']
+                    }
+                    engagement_platform_data_list.append(formatted_data)
+
+            except Exception as e:
+                    print(f"Error occurred while fetching engagement data for ID {id_value}: {e}")
+
+    if engagement_platform_data_list:
+        highest_engagement_platform_data = None
+        for item in engagement_platform_data_list:
+            if highest_engagement_platform_data is None or item["value"] > highest_engagement_platform_data['value']:
+                highest_engagement_platform_data = item
+    else:
+        highest_engagement_platform_data = None
+
+        
+
+    object_id_list_all = []
+
+    for item in id_list:
+        object_id_list_all.append(item['id'])
+
+    try:
+        peaktime_data = request_peaktime(
+            api_key=api_key,
+            timestamp_start=timestamp_start,
+            timestamp_end=timestamp_end,
+            object_id=object_id_list_all
+        )
+    except Exception as e:
+                    print(f"Error occurred while fetching peak time data: {e}")
+
+    highest_peaktime_data = max(peaktime_data['result']['values'], key=lambda x: x['value'])
+    
     most_comment_platform_data_list = []
 
     for item in id_list:
@@ -300,4 +353,4 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
     #     print(f"  ID: {most_comment_data['id']}")
     #     print()
 
-    return platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, most_comment_data
+    return platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, highest_engagement_platform_data, highest_peaktime_data, most_comment_data
