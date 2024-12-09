@@ -1,8 +1,8 @@
 from NoLimit_API_Endpoint.get_total_article_by_media import request_total_article_by_media
 from NoLimit_API_Endpoint.get_article import request_all_article
 
-def online_media_analysis(api_key, clipping_ids, timestamp_start, timestamp_end):
-    data_media = request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_ids)
+def online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end):
+    data_media = request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_id)
 
     if data_media is not None and 'result' in data_media:
         result_media = data_media['result']
@@ -54,7 +54,7 @@ def online_media_analysis(api_key, clipping_ids, timestamp_start, timestamp_end)
     else:
         print("No articles available for sentiment analysis.")
 
-    data_articles = request_all_article(api_key, timestamp_start, timestamp_end, clipping_ids)
+    data_articles = request_all_article(api_key, timestamp_start, timestamp_end, clipping_id)
     
     positive_articles = {}
     neutral_articles = {}
@@ -103,11 +103,6 @@ def online_media_analysis(api_key, clipping_ids, timestamp_start, timestamp_end)
     else:
         print("No neutral sentiment articles found.")
     
-clipping_ids = "00aa0060-4295-499c-b403-6d1bea15a020"
-timestamp_start = "2024-10-01 00:00:00"
-timestamp_end = "2024-10-30 23:59:00"
-api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
 
-result = online_media_analysis(api_key, clipping_ids, timestamp_start, timestamp_end)
 
-print(result)
+    return positive_percentage, neutral_percentage, peak_positive_date, peak_neutral_date, peak_positive_content, peak_neutral_content, most_articles_media, media_count

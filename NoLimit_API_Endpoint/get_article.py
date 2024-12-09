@@ -2,11 +2,8 @@ import requests
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
-
-def request_all_article(api_key, timestamp_start, timestamp_end, clipping_ids):
+def request_all_article(api_key, timestamp_start, timestamp_end, clipping_id):
     url = "https://external.backend.dashboard.nolimit.id/v1.0/online-media/article/get-article"
-    api_key = "6369ada0-6231-42c1-965b-6d73f2e87662"
-
 
     headers = {
         "Content-Type": "application/json",
@@ -20,7 +17,7 @@ def request_all_article(api_key, timestamp_start, timestamp_end, clipping_ids):
     "media_list": [],
     "include_phrases": [],
     "sentiment": ["positive", "negative", "neutral"],
-    "clipping_id": clipping_ids,
+    "clipping_id": clipping_id,
     "limit": 100,
     "page": 1
     }

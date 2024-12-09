@@ -1,6 +1,6 @@
 import requests
 
-def request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_ids):
+def request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_id):
     url = "https://external.backend.dashboard.nolimit.id/v1.0/online-media/article/total-article-by-media"
 
     headers = {
@@ -15,7 +15,7 @@ def request_total_article_by_media(api_key, timestamp_start, timestamp_end, clip
         "media_list": [],  
         "include_phrases": [],  
         "sentiment": [],  
-        "clipping_id": clipping_ids  
+        "clipping_id": clipping_id
     }
 
     try:
@@ -29,4 +29,5 @@ def request_total_article_by_media(api_key, timestamp_start, timestamp_end, clip
             return None  
     except requests.exceptions.RequestException as e:
         print(f"Network error occurred: {e}")
-        return None  
+        return None 
+    
