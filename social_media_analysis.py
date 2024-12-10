@@ -208,6 +208,7 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
     highest_peaktime_data = max(peaktime_data['result']['values'], key=lambda x: x['value'])
     
     most_comment_platform_data_list = []
+    most_like_platform_data_list = []
 
     for item in id_list:
         if item['streamType'] == 'account':
@@ -220,20 +221,36 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
                     object_id=id_value
                 )
                 if most_comment_platform_data:
-                    formatted_data = {
-                        'timestamp': most_comment_platform_data['result']['list'][0]['timestamp'],
+                    formatted_most_comment_data = {
+                        # 'timestamp': most_comment_platform_data['result']['list'][0]['timestamp'],
                         'socialMedia': most_comment_platform_data['result']['list'][0]['socialMedia'],
-                        'fromName': most_comment_platform_data['result']['list'][0]['fromName'],
-                        'keywordStreamType': most_comment_platform_data['result']['list'][0]['keyword']['streamType'],
-                        'link': most_comment_platform_data['result']['list'][0]['link'],
-                        'engagementRate': most_comment_platform_data['result']['list'][0]['engagementRate'],
+                        # 'fromName': most_comment_platform_data['result']['list'][0]['fromName'],
+                        # 'keywordStreamType': most_comment_platform_data['result']['list'][0]['keyword']['streamType'],
+                        # 'link': most_comment_platform_data['result']['list'][0]['link'],
+                        # 'engagementRate': most_comment_platform_data['result']['list'][0]['engagementRate'],
                         'commentCount': most_comment_platform_data['result']['list'][0]['commentCount'],
-                        'engagement': most_comment_platform_data['result']['list'][0]['engagement'],
+                        # 'engagement': most_comment_platform_data['result']['list'][0]['engagement'],
                         'content': most_comment_platform_data['result']['list'][0]['content'],
                         'contentType': most_comment_platform_data['result']['list'][0]['contentType'],
-                        'id': most_comment_platform_data['result']['list'][0]['id']
+                        # 'id': most_comment_platform_data['result']['list'][0]['id']
                     }
-                    most_comment_platform_data_list.append(formatted_data)
+                    most_comment_platform_data_list.append(formatted_most_comment_data)
+
+                if most_comment_platform_data:
+                    formatted_most_like_data = {
+                        # 'timestamp': most_comment_platform_data['result']['list'][0]['timestamp'],
+                        'socialMedia': most_comment_platform_data['result']['list'][0]['socialMedia'],
+                        # 'fromName': most_comment_platform_data['result']['list'][0]['fromName'],
+                        # 'keywordStreamType': most_comment_platform_data['result']['list'][0]['keyword']['streamType'],
+                        # 'link': most_comment_platform_data['result']['list'][0]['link'],
+                        # 'engagementRate': most_comment_platform_data['result']['list'][0]['engagementRate'],
+                        'likeCount': most_comment_platform_data['result']['list'][0]['likeCount'],
+                        # 'engagement': most_comment_platform_data['result']['list'][0]['engagement'],
+                        'content': most_comment_platform_data['result']['list'][0]['content'],
+                        'contentType': most_comment_platform_data['result']['list'][0]['contentType'],
+                        # 'id': most_comment_platform_data['result']['list'][0]['id']
+                    }
+                    most_like_platform_data_list.append(formatted_most_like_data)
 
             except Exception as e:
                 print(f"Error occurred while fetching top post data for ID {id_value}: {e}")
@@ -244,9 +261,19 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
             if data['commentCount'] > most_comment_data['commentCount']:
                 most_comment_data = data
                 # print(most_comment_data)
-        else:
-            most_comment_data = most_comment_platform_data_list[0] 
-            # print(most_comment_data)
+    else:
+        most_comment_data = most_comment_platform_data_list[0] 
+        # print(most_comment_data)
+
+    if len(most_like_platform_data_list) > 1:
+        most_like_data = most_like_platform_data_list[0]
+        for data in most_like_platform_data_list[1:]:
+            if data['likeCount'] > most_like_data['likeCount']:
+                most_like_data = data
+                # print(most_like_data)
+    else:
+        most_like_data = most_like_platform_data_list[0] 
+        # print(most_like_data)
 
 
     # if platform_post_highest_engagement_rate_list:
@@ -353,4 +380,4 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
     #     print(f"  ID: {most_comment_data['id']}")
     #     print()
 
-    return platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, highest_engagement_platform_data, highest_peaktime_data, most_comment_data
+    return platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, highest_engagement_platform_data, highest_peaktime_data, most_comment_data, most_like_data

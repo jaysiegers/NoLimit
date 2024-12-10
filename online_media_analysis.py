@@ -58,6 +58,7 @@ def online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end):
     
     positive_articles = {}
     neutral_articles = {}
+    negative_articles = {}
 
     if data_articles and "result" in data_articles and "list" in data_articles["result"]:
         articles = data_articles["result"]["list"]
@@ -76,6 +77,11 @@ def online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end):
                 if date_published not in neutral_articles:
                     neutral_articles[date_published] = []
                 neutral_articles[date_published].append((content, media))
+
+            elif sentiment == "negative":
+                if date_published not in negative_articles:
+                    negative_articles[date_published] = []
+                negative_articles[date_published].append((content, media))
 
     if positive_articles:
         peak_positive_date = max(positive_articles, key=lambda x: len(positive_articles[x]))
@@ -102,7 +108,12 @@ def online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end):
             print(f"- {content}")
     else:
         print("No neutral sentiment articles found.")
-    
+
+    if negative_articles:
+        peak_negative_date = max(negative_articles, key=lambda x: len(negative_articles[x]))
+        peak_negative_content = negative_articles[peak_negative_date]
+    else:
+        print("No negative sentiment articles found.")
 
 
-    return positive_percentage, neutral_percentage, peak_positive_date, peak_neutral_date, peak_positive_content, peak_neutral_content, most_articles_media, media_count
+    return positive_percentage, neutral_percentage, negative_percentage, peak_positive_date, peak_neutral_date, peak_negative_date, peak_positive_content, peak_neutral_content, peak_negative_content, most_articles_media, media_count
