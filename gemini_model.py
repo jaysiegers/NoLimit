@@ -6,7 +6,7 @@ from online_media_analysis import online_media_analysis
 def process_social_media_analysis_response(api_key, object_ids, timestamp_start, timestamp_end): 
 
     platform_post_highest_engagement_rate_data, post_highest_engagement_rate_data, highest_engagement_rate_data, highest_engagement_platform_data, highest_peaktime_data, most_comment_data, most_like_data = social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end)
-    genai.configure(api_key="AIzaSyByIpsd3zkJldFuApQA3mTmA_ziTXpOJyY")
+    genai.configure(api_key="AIzaSyD1dIAE56HNUWjnZCkE-lOAaxluXnoFOT4")
     model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = (
@@ -17,7 +17,7 @@ def process_social_media_analysis_response(api_key, object_ids, timestamp_start,
         "Use the following structure:\n\n"
         "Pada bulan [Timestamp start, Timestamp end (just take the month)], didapatkan performa terbaik di platform [platform with the highest ER] dengan engagement rate sebesar [Engagement rate value of platform with the highest ER] terutama pada konten mengenai [Caption of platform with the highest ER (max 1 sentence)]."
         "Selain itu, platform [Platform with the highest engagement] mendapatkan total engagement tertinggi sebesar [Engagement value of platform with the highest engagement]."
-        "PT. ASDP mendapatkan engagement tertinggi sebanyak [Value of peaktime data] pada hari [Day of peaktime data] pada pukul [Hour of peaktime data]."
+        "Engagement tertinggi didapat sebanyak [Value of peaktime data] pada hari [Day of peaktime data] pada pukul [Hour of peaktime data]."
         "Konten yang paling banyak dikomentari di [Platform with most commented post] adalah [Content type of most commented post] terutama terkait [Caption of most commented post (max 1 sentence)]."
         "Konten yang paling banyak disukai di [Platform with most liked post] adalah [Content type of most liked post] terutama terkait [Caption of most liked post (max 1 sentence)]."
         "Here is the data to be summarized:\n"
@@ -49,7 +49,7 @@ def process_social_media_analysis_response(api_key, object_ids, timestamp_start,
 def process_online_media_analysis_response(api_key, clipping_id, timestamp_start, timestamp_end):
 
     positive_percentage, neutral_percentage, negative_percentage, peak_positive_date, peak_neutral_date, peak_negative_date, peak_positive_content, peak_neutral_content, peak_negative_content, most_articles_media, media_count= online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end)
-    genai.configure(api_key="AIzaSyByIpsd3zkJldFuApQA3mTmA_ziTXpOJyY")
+    genai.configure(api_key="AIzaSyD1dIAE56HNUWjnZCkE-lOAaxluXnoFOT4")
     model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = (
