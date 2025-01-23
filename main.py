@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException, Header, Depends
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel, Field
 from mangum import Mangum
 from typing import List, Dict, Any
 from gemini_model import process_social_media_analysis_response, process_online_media_analysis_response
+from exceptions import APIError
 
 
 app = FastAPI()
@@ -50,10 +51,12 @@ def request_social_media_analysis(
             raise HTTPException(status_code=500, detail="No data received from social_media_analysis()")
 
         return {"response": social_media_analysis_response}
+    except APIError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"Error occurred: {e}")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error occurred: {e}")
-    
+        raise HTTPException(status_code=500, detail=f"Error occurred: exception: {e}")
+        # raise HTTPException(detail=f"Error occurred: {str(e)}")
 
 
 @app.post("/online-media-analysis", response_model=OnlineMediaAnalysisResponse)
