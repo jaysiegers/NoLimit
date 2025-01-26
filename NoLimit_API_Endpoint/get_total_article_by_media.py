@@ -1,5 +1,7 @@
 import requests
 
+from exceptions import APIError
+
 def request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_id):
     url = "https://external.backend.dashboard.nolimit.id/v1.0/online-media/article/total-article-by-media"
 
@@ -25,9 +27,10 @@ def request_total_article_by_media(api_key, timestamp_start, timestamp_end, clip
             data = response.json()  
             return data  
         else:
-            print(f"Error: {response.status_code}, {response.text}")
-            return None  
-    except requests.exceptions.RequestException as e:
-        print(f"Network error occurred: {e}")
-        return None 
+            raise APIError(response.status_code, response.text)
+    except APIError as e:
+        raise e
+    
+    except Exception as e:
+        raise RuntimeError(e)
     

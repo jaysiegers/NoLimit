@@ -24,4 +24,4 @@ def request_keyword(api_key):
         raise e
     
     except Exception as e:
-        raise RuntimeError(f"{e}")
+        raise RuntimeError(e)

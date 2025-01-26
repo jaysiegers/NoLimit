@@ -1,6 +1,8 @@
 from NoLimit_API_Endpoint.get_total_article_by_media import request_total_article_by_media
 from NoLimit_API_Endpoint.get_article import request_all_article
 
+from exceptions import APIError
+
 def online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end):
     data_media = request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_id)
 
