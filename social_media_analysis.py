@@ -15,14 +15,16 @@ def social_media_analysis(api_key, object_ids, timestamp_start, timestamp_end):
     most_comment_data = None
     most_like_data = None
 
-    if object_ids == False:
+    if len(object_ids) == 0:
         raise APIError(status_code=400, message="Object ID not supplied!")
+    
+    # if object_ids == False:
+    #     raise APIError(status_code=400, message="Object ID not supplied!")
 
     try:
         keyword_data = request_keyword(api_key)
         if not keyword_data or 'result' not in keyword_data:
-            # raise HTTPException(status_code=404, detail="Item not found")
-            raise ValueError(e)
+            raise APIError(status_code=404, message=f"Keyword/account not found.")
         
     except APIError as e:
         raise e

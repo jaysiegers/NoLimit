@@ -1,16 +1,53 @@
 from NoLimit_API_Endpoint.get_total_article_by_media import request_total_article_by_media
 from NoLimit_API_Endpoint.get_article import request_all_article
+from NoLimit_API_Endpoint.get_clipping import request_clipping
 
 from exceptions import APIError
 
 def online_media_analysis(api_key, clipping_id, timestamp_start, timestamp_end):
-    data_media = request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_id)
+    positive_percentage = None
+    neutral_percentage = None
+    negative_percentage = None
+    peak_positive_date = None
+    peak_neutral_date = None
+    peak_negative_date = None
+    peak_positive_content = None
+    peak_neutral_content = None
+    peak_negative_content = None
+    most_articles_media = None
+    media_count = None
 
-    if data_media is not None and 'result' in data_media:
-        result_media = data_media['result']
-    else:
-        print("No article available for media analysis.")
-        result_media = []
+    if not clipping_id:
+        raise APIError(status_code=400, message="Clipping ID not supplied!")
+    
+    try:
+        clipping_data = request_clipping(api_key)
+        if not clipping_data or 'result' not in clipping_data:
+            raise APIError(status_code=404, message=f"Clipping not found.")
+        
+    except APIError as e:
+        raise e
+    
+    except Exception as e:
+        raise RuntimeError(e)
+    
+    if not any(clipping["id"] == clipping_id for clipping in clipping_data["result"]):
+        raise APIError(status_code=400, message=f"Invalid clipping ID: {clipping_id} supplied!")
+    
+    try:
+        data_media = request_total_article_by_media(api_key, timestamp_start, timestamp_end, clipping_id)
+
+        if data_media is not None and 'result' in data_media:
+            result_media = data_media['result']
+        else:
+            raise APIError(status_code=404, message="Articles not found.")
+        
+    except APIError as e:
+        raise e
+    
+    except Exception as e:
+        raise RuntimeError(e)
+
 
     total_positive = 0
     total_negative = 0
